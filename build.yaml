@@ -14,7 +14,7 @@ phases:
       - npm install
       - cdk list
       - cdk synth --all
-      - cdk deploy --all
+      - cdk deploy --all --require-approval=never
 
   post_build:
     commands:
