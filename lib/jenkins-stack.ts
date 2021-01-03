@@ -1,5 +1,6 @@
 import * as cdk from "@aws-cdk/core";
 import * as ec2 from "@aws-cdk/aws-ec2";
+import * as iam from "@aws-cdk/aws-iam";
 
 var path = require("path");
 
@@ -16,6 +17,19 @@ export class JenkinsStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props: JenkinsStackProps) {
     super(scope, id, props);
 
+    const jenkinsRole = new iam.Role(this, "JenkinsInstanceRole", {
+      roleName: "jenkins-instance-role",
+      assumedBy: new iam.ServicePrincipal("ec2.amazonaws.com"),
+    });
+
+    jenkinsRole.addToPolicy(
+      new iam.PolicyStatement({
+        resources: ["*"],
+        actions: ["*"],
+        effect: iam.Effect.ALLOW,
+      })
+    );
+
     const jenkinsInstanceSG = new ec2.SecurityGroup(this, "JenkinsInstanceSG", {
       vpc: props.vpc,
       allowAllOutbound: true,
@@ -26,6 +40,7 @@ export class JenkinsStack extends cdk.Stack {
     jenkinsInstanceSG.addIngressRule(ec2.Peer.ipv4("10.0.0.0/24"), ec2.Port.tcp(8080));
 
     this.jenkinsInstance = new ec2.Instance(this, "JenkinsInstance", {
+      role: jenkinsRole,
       vpc: props.vpc,
       instanceType: new ec2.InstanceType("t3a.small"),
       machineImage: new ec2.GenericLinuxImage({
