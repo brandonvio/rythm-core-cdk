@@ -11,11 +11,10 @@ phases:
       - docker --version
   build:
     commands:
-      # Config CDK.
       - npm install
       - cdk list
       - cdk synth --all
-      - ckd deploy -all
+      - ckd deploy --all
 
   post_build:
     commands:
