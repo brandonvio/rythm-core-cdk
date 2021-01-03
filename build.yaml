@@ -14,7 +14,7 @@ phases:
       - npm install
       - cdk list
       - cdk synth --all
-      - ckd deploy --all
+      - cdk deploy --all
 
   post_build:
     commands:
