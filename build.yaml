@@ -1,0 +1,22 @@
+version: 0.2
+# Build
+phases:
+  pre_build:
+    commands:
+      - echo pre_build @1.
+      - npm install -g typescript
+      - npm install -g aws-cdk
+      - aws --version
+      - cdk --version
+      - docker --version
+  build:
+    commands:
+      # Config CDK.
+      - npm install
+      - cdk list
+      - cdk synth --all
+      - ckd deploy -all
+
+  post_build:
+    commands:
+      - echo post_build
