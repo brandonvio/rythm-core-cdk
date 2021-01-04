@@ -1,6 +1,4 @@
 import * as cdk from "@aws-cdk/core";
-// import { PriceSvcStack } from "./price-svc-stack";
-// import { SocketioSvcStack } from "./socketio-svc-stack";
 import { CertificateStack } from "./certificate-stack";
 import { EcsStack } from "./ecs-stack";
 import { VpcStack } from "./vpc-stack";
@@ -33,25 +31,10 @@ export class RythmSvcCdkStack extends cdk.Stack {
       env: props.env,
     });
 
-    // const hostedZoneId = ssm.StringParameter.valueForStringParameter(this, "rythm-hostedzoneid", 1);
-
     const certificateStack = new CertificateStack(this, "CertificateStack", {
       stackName: "rythm-certificate-stack",
-      // hostedZoneId: domainStack.zone.hostedZoneId,
-    });
-
-    const certificateStackEast = new CertificateStack(this, "CertificateStackEast", {
-      stackName: "rythm-certificate-stack",
-      // hostedZoneId: domainStack.zone.hostedZoneId,
-      env: {
-        account: props.env?.account,
-        region: "us-east-1",
-      },
-    });
-
-    new ssm.StringParameter(this, "RythmCertificateArnParameter", {
-      parameterName: "rythm-certificate-east-arn",
-      stringValue: certificateStackEast.certificateArn,
+      env: props.env,
+      hostedZone: domainStack.zone,
     });
 
     const vpcStack = new VpcStack(this, "RythmVpcStack", {
@@ -87,23 +70,5 @@ export class RythmSvcCdkStack extends cdk.Stack {
       instance: jenkinsStack.jenkinsInstance,
     });
     jenkinsAlbStack.addDependency(jenkinsStack);
-
-    // const priceSvcStack = new PriceSvcStack(this, "PriceSvcStack", {
-    //   stackName: "rythm-price-svc-stack",
-    //   cluster: coreStack.cluster,
-    //   env: props.env,
-    // });
-
-    // const socketioSvcStack = new SocketioSvcStack(this, "SocketioSvcStack", {
-    //   stackName: "rythm-socketio-svc-stack",
-    //   cluster: coreStack.cluster,
-    //   vpc: coreStack.vpc,
-    //   env: props.env,
-    // });
-
-    // const websiteStack = new WebsiteStack(this, "WebsiteStack", {
-    //   stackName: "rythm-website-stack",
-    //   env: props.env,
-    // });
   }
 }
