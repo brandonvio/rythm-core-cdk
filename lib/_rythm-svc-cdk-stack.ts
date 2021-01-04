@@ -49,6 +49,11 @@ export class RythmSvcCdkStack extends cdk.Stack {
       },
     });
 
+    new ssm.StringParameter(this, "RythmCertificateArnParameter", {
+      parameterName: "rythm-certificate-east-arn",
+      stringValue: certificateStackEast.certificateArn,
+    });
+
     const vpcStack = new VpcStack(this, "RythmVpcStack", {
       stackName: "rythm-vpc-stack",
       env: props.env,

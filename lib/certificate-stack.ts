@@ -8,6 +8,7 @@ interface CertificateStackProps extends cdk.StackProps {
 }
 
 export class CertificateStack extends cdk.Stack {
+  public readonly certificateArn: string;
   constructor(scope: cdk.Construct, id: string, props: CertificateStackProps) {
     super(scope, id, props);
 
