@@ -36,7 +36,7 @@ export class CertificateStack extends cdk.Stack {
 
     new ssm.StringParameter(this, "RythmEastCertificateArnParameter", {
       parameterName: "rythm-east-certificate-arn",
-      stringValue: cert.certificateArn,
+      stringValue: eastCertificate.certificateArn,
     });
   }
 }
