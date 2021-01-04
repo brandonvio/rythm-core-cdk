@@ -37,12 +37,12 @@ export class RythmSvcCdkStack extends cdk.Stack {
 
     const certificateStack = new CertificateStack(this, "CertificateStack", {
       stackName: "rythm-certificate-stack",
-      hostedZoneId: domainStack.zone.hostedZoneId,
+      // hostedZoneId: domainStack.zone.hostedZoneId,
     });
 
     const certificateStackEast = new CertificateStack(this, "CertificateStackEast", {
       stackName: "rythm-certificate-stack",
-      hostedZoneId: domainStack.zone.hostedZoneId,
+      // hostedZoneId: domainStack.zone.hostedZoneId,
       env: {
         account: props.env?.account,
         region: "us-east-1",
