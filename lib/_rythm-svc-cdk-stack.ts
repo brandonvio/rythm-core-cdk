@@ -38,6 +38,15 @@ export class RythmSvcCdkStack extends cdk.Stack {
       zone: domainStack.zone,
     });
 
+    const certificateStackEast = new CertificateStack(this, "CertificateStackEast", {
+      stackName: "rythm-certificate-stack",
+      zone: domainStack.zone,
+      env: {
+        account: props.env?.account,
+        region: "us-east-1",
+      },
+    });
+
     const vpcStack = new VpcStack(this, "RythmVpcStack", {
       stackName: "rythm-vpc-stack",
       env: props.env,

@@ -11,13 +11,10 @@ export class CertificateStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props: CertificateStackProps) {
     super(scope, id, props);
 
-    const hostedZoneId = ssm.StringParameter.valueForStringParameter(this, "rythm-hostedzoneid", 1);
-    const zone = route53.HostedZone.fromHostedZoneId(this, "RythmHostedZone", hostedZoneId);
-
     const cert = new acm.Certificate(this, "RythmCertificate", {
       subjectAlternativeNames: ["rythm.cc"],
       domainName: "*.rythm.cc",
-      validation: acm.CertificateValidation.fromDns(zone),
+      validation: acm.CertificateValidation.fromDns(props.zone),
     });
 
     new cdk.CfnOutput(this, "Rythm Certificate ARN", {
