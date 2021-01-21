@@ -49,8 +49,19 @@ export class JenkinsAlbStack extends cdk.Stack {
       certificates: [certificate],
     });
 
+    listener.addTargets("DefaultTarget", {
+      targets: [new elbtargets.IpTarget("192.169.1.0", 80)],
+      port: 80,
+      healthCheck: {
+        port: "80",
+        healthyHttpCodes: "200,403",
+      },
+    });
+
     listener.addTargets("JenkinsInstanceTarget", {
+      priority: 10,
       targets: [new elbtargets.InstanceTarget(props.instance, 8080)],
+      conditions: [elbv2.ListenerCondition.hostHeaders(["build.rythm.cc"])],
       port: 8080,
       healthCheck: {
         port: "8080",
